@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.currencyLayerProviders = exports.currencyLayerConfig = void 0;
+exports.CURRENCY_LAYER_CONFIG = exports.currencyLayerProviders = exports.currencyLayerConfig = void 0;
 const apiKey = '13e21855529794b1addf14d688c1e607';
 exports.currencyLayerConfig = {
     apiKey,
@@ -12,4 +12,5 @@ exports.currencyLayerProviders = [{
         provide: 'CURRENCY_LAYER_CONFIG',
         useValue: exports.currencyLayerConfig,
     }];
+exports.CURRENCY_LAYER_CONFIG = 'CURRENCY_LAYER_CONFIG';
 //# sourceMappingURL=currencyLayerConfig.js.map

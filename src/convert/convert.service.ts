@@ -7,17 +7,19 @@ import {
   conversionData,
   conversionOutput,
   convertKey,
-} from '../interfaces/conversion.interfaces';
-import {ExchangeRates} from "../interfaces/exchangeRates.interface";
-import {CurrencyLayerClient} from "../currencyLayer/currencyLayerClient";
-import {Logger_Provider} from "../constants/constants";
-import {Logger} from "../logger";
+} from './interfaces/conversion.interfaces';
+import {ExchangeRates} from "./interfaces/exchangeRates.interface";
+import {Logger} from "../logger/logger";
+import {ExternalCurrencyClient} from "../currencyLayer/currencyLayerClient.interface";
+import {Logger_Provider} from "../logger/loggerProvider";
+import {Currency_Provider} from "../currencyLayer/currencyProvider";
+
 
 @Injectable()
 export class ConvertService {
 
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache ,
-              private readonly currencyLayerClient: CurrencyLayerClient ,
+              @Inject(Currency_Provider) private readonly client: ExternalCurrencyClient ,
               @Inject(Logger_Provider)private readonly logger: Logger
 ) {}
 
@@ -62,7 +64,7 @@ export class ConvertService {
   }
 
   private async fetchFromExternal(input: convertKey): Promise<ExchangeRates> {
-      const exchangeRates = await this.currencyLayerClient.getHistoricalRates({date : input.date, source : input.source, destination : input.destination,});
+      const exchangeRates = await this.client.getHistoricalRates({date : input.date, source : input.source, destination : input.destination,});
       const rates: { currency: string; rate: number }[] = [];
 
       input.destination.forEach((destination) => {

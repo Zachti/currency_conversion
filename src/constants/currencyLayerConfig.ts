@@ -11,3 +11,5 @@ export const currencyLayerProviders = [{
   provide: 'CURRENCY_LAYER_CONFIG',
   useValue: currencyLayerConfig,
 }]
+
+export const CURRENCY_LAYER_CONFIG = 'CURRENCY_LAYER_CONFIG';

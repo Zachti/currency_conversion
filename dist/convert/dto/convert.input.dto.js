@@ -20,7 +20,6 @@ class ConvertInputDto {
 }
 exports.ConvertInputDto = ConvertInputDto;
 __decorate([
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.Validate)(isValidSourceValidator_1.ValidSourceValidator),
     __metadata("design:type", String)
 ], ConvertInputDto.prototype, "source", void 0);

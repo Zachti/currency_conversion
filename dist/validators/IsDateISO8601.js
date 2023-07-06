@@ -8,13 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IsDateISO8601 = void 0;
 const class_validator_1 = require("class-validator");
-const luxon_1 = require("luxon");
-const currencyLayerConfig_1 = require("../currencyLayer/currencyLayerConfig");
 const constants_1 = require("../constants/constants");
 let IsDateISO8601 = exports.IsDateISO8601 = class IsDateISO8601 {
     validate(dateReceived) {
-        const date = luxon_1.DateTime.fromFormat(dateReceived, currencyLayerConfig_1.currencyLayerConfig.dateFormat);
-        return date.isValid;
+        const regex = /^\d{4}-\d{2}-\d{2}$/;
+        return regex.test(dateReceived);
     }
     defaultMessage(args) {
         return `${constants_1.DATE_MUST_BE_ISO8601}. input: ${args.value}`;

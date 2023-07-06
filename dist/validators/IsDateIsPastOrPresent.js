@@ -8,11 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IsDateIsPastOrPresent = void 0;
 const class_validator_1 = require("class-validator");
-const luxon_1 = require("luxon");
 const constants_1 = require("../constants/constants");
 let IsDateIsPastOrPresent = exports.IsDateIsPastOrPresent = class IsDateIsPastOrPresent {
     validate(dateReceived, validationArguments) {
-        return luxon_1.DateTime.fromISO(dateReceived) <= luxon_1.DateTime.now();
+        const date = Date.parse(dateReceived);
+        return date <= Date.now();
     }
     defaultMessage(args) {
         return `${constants_1.DATE_CANNOT_BE_FUTURE}. input: ${args.value}`;

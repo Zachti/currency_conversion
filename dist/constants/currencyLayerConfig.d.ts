@@ -13,3 +13,4 @@ export declare const currencyLayerProviders: {
         name: string;
     };
 }[];
+export declare const CURRENCY_LAYER_CONFIG = "CURRENCY_LAYER_CONFIG";

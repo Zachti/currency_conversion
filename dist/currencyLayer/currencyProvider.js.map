@@ -1,0 +1,1 @@
+{"version":3,"file":"currencyProvider.js","sourceRoot":"","sources":["../../src/currencyLayer/currencyProvider.ts"],"names":[],"mappings":";;;AAAA,+DAA0D;AAE7C,QAAA,iBAAiB,GAAG,0BAA0B,CAAC;AAE/C,QAAA,gBAAgB,GAAG;IAC5B,OAAO,EAAG,0BAA0B;IACpC,QAAQ,EAAE,yCAAmB;CAChC,CAAA"}

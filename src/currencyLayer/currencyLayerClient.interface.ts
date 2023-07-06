@@ -1,6 +1,6 @@
-import {convertKey} from "../interfaces/conversion.interfaces";
-import {ExchangeRates} from "../interfaces/exchangeRates.interface";
+import {convertKey} from "../convert/interfaces/conversion.interfaces";
+import {ExchangeRates} from "../convert/interfaces/exchangeRates.interface";
 
-export interface CurrencyLayerClientInterface {
+export interface ExternalCurrencyClient {
     getHistoricalRates(data: convertKey): Promise<ExchangeRates>
 }

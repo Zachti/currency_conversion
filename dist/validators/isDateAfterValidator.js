@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IsDateAfter = void 0;
 const class_validator_1 = require("class-validator");
-const luxon_1 = require("luxon");
 let IsDateAfter = exports.IsDateAfter = class IsDateAfter {
     validate(dateReceived, validationArguments) {
-        return luxon_1.DateTime.fromISO(dateReceived) > luxon_1.DateTime.fromISO(validationArguments.constraints[0]);
+        const milliseconds = Date.parse(dateReceived);
+        const validationInMilliseconds = Date.parse(validationArguments.constraints[0]);
+        return milliseconds > validationInMilliseconds;
     }
 };
 exports.IsDateAfter = IsDateAfter = __decorate([

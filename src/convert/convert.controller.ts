@@ -3,8 +3,8 @@ import {CacheInterceptor} from '@nestjs/cache-manager';
 import {TransformInterceptor} from '../interceptors/transformInterceptor';
 import {ConvertInputDto} from './dto/convert.input.dto';
 import {ConvertService} from './convert.service';
-import {Logger} from '../logger'
-import {Logger_Provider} from "../constants/constants";
+import {Logger} from '../logger/logger'
+import {Logger_Provider} from "../logger/loggerProvider";
 
 
 @UseInterceptors(TransformInterceptor)
