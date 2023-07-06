@@ -1,4 +1,4 @@
-import {Inject, Injectable, ConsoleLogger} from '@nestjs/common';
+import {Inject, Injectable} from '@nestjs/common';
 import { ConvertInputDto } from './dto/convert.input.dto';
 import { Big } from 'big.js';
 import { Cache } from 'cache-manager';
@@ -11,19 +11,20 @@ import {
 import {ExchangeRates} from "../interfaces/exchangeRates.interface";
 import {CurrencyLayerClient} from "../currencyLayer/currencyLayerClient";
 import {Logger_Provider} from "../constants/constants";
+import {Logger} from "../logger";
 
 @Injectable()
 export class ConvertService {
 
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache ,
               private readonly currencyLayerClient: CurrencyLayerClient ,
-              @Inject(Logger_Provider)private readonly logger: ConsoleLogger
+              @Inject(Logger_Provider)private readonly logger: Logger
 ) {}
 
   async convert(query: ConvertInputDto) {
     const exchangeRates = await this.fetchExchangeRates(query);
     return exchangeRates.rates.map((rate, timestamp) =>
-        ConvertService.executeConversion({rate : rate.rate, query, timestamp, currency: rate.currency}),
+        ConvertService.Conversion({rate : rate.rate, query, timestamp, currency: rate.currency}),
     );
   }
 
@@ -45,7 +46,7 @@ export class ConvertService {
     });
   }
 
-  private static executeConversion(data: conversionData): conversionOutput {
+  private static Conversion(data: conversionData): conversionOutput {
     const rate = new Big(data.rate);
     const amount = new Big(data.query.amount);
     const result= rate.times(amount).toFixed(4);

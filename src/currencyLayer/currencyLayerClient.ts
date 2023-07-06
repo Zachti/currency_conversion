@@ -6,10 +6,11 @@ import {convertKey} from "../interfaces/conversion.interfaces";
 import {ExchangeRates} from "../interfaces/exchangeRates.interface";
 import {lastValueFrom} from "rxjs";
 import {Logger} from '../logger'
+import {CurrencyLayerClientInterface} from "./currencyLayerClient.interface";
 
 
 @Injectable()
-export class CurrencyLayerClient {
+export class CurrencyLayerClient implements CurrencyLayerClientInterface{
     constructor(@Inject(CURRENCY_LAYER_CONFIG) readonly config , private readonly httpService: HttpService ,
                 @Inject(Logger_Provider)private logger:Logger
 ) {
