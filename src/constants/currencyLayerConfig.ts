@@ -1,10 +1,10 @@
-const apiKey = "13e21855529794b1addf14d688c1e607";
+import { ConfigService } from '@nestjs/config';
+
+const configService = new ConfigService();
 
 export const currencyLayerConfig = {
-  apiKey,
+  apiKey: configService.get<string>('apiKey'),
   dateFormat: "YYYY-MM-DD", // should be according to ISO 8601 format
-  defaultSourceCurrencyCode: "USD",
-  name: "CurrencyLayer",
 };
 
 export const currencyLayerProvider =

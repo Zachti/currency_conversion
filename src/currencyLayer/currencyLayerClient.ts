@@ -1,5 +1,4 @@
 import { CurrencyLayerError } from "./currencyLayerError";
-import { BASE_URL_HTTPS, HISTORICAL_ENDPOINT } from "../constants/constants";
 import { Inject, Injectable } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { convertKey } from "../convert/interfaces/conversion.interfaces";
@@ -8,13 +7,15 @@ import { lastValueFrom } from "rxjs";
 import {LoggerProvider} from "../logger/logger";
 import { ExternalCurrencyClient } from "./currencyLayerClient.interface";
 import { CURRENCY_LAYER_CONFIG } from "../constants/currencyLayerConfig";
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CurrencyLayerClient implements ExternalCurrencyClient {
   constructor(
     @Inject(CURRENCY_LAYER_CONFIG) readonly config,
     private readonly httpService: HttpService,
-    private logger: LoggerProvider
+    private readonly logger: LoggerProvider ,
+    private readonly configService: ConfigService ,
   ) {
     if (!this.config.apiKey) {
       throw new Error("apiKey must be provided");
@@ -22,7 +23,7 @@ export class CurrencyLayerClient implements ExternalCurrencyClient {
   }
 
   async getHistoricalRates(data: convertKey): Promise<ExchangeRates> {
-    const requestUrl = this.buildRequestUrl(HISTORICAL_ENDPOINT, {
+    const requestUrl = this.buildRequestUrl(this.configService.get<string>('historicalEndpoint'), {
       source: data.source,
       destination: data.destination,
       date: data.date,
@@ -61,7 +62,7 @@ export class CurrencyLayerClient implements ExternalCurrencyClient {
       ["source", data.source],
     ]);
 
-    const url = new URL(`${BASE_URL_HTTPS}${endpoint}`);
+    const url = new URL(`${this.configService.get<string>('baseUrlHttps')}${endpoint}`);
     url.search = queryParams.toString();
     return url;
   }
