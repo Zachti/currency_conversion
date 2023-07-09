@@ -8,7 +8,7 @@ import {
 import { CacheInterceptor } from "@nestjs/cache-manager";
 import { ConvertInputDto } from "./dto/convert.input.dto";
 import { ConvertService } from "./convert.service";
-import {LoggerProvider} from "../logger/logger";
+import { LoggerProvider } from "../logger/logger";
 
 @Controller("convert")
 export class ConvertController {

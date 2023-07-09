@@ -12,7 +12,8 @@ export class ValidSourceValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `Invalid currency. Allowed values are: ${Object.values(Currency)
-      .join(", ")}`;
+    return `Invalid currency. Allowed values are: ${Object.values(
+      Currency
+    ).join(", ")}`;
   }
 }

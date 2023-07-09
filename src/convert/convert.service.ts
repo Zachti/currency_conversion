@@ -17,7 +17,8 @@ import { Currency_Client_Provider } from "../constants/currencyProvider";
 export class ConvertService {
   constructor(
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-    @Inject(Currency_Client_Provider) private readonly client: ExternalCurrencyClient,
+    @Inject(Currency_Client_Provider)
+    private readonly client: ExternalCurrencyClient,
     private readonly logger: LoggerProvider
   ) {}
 

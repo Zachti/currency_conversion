@@ -1,33 +1,36 @@
 import { CurrencyLayerError } from "./currencyLayerError";
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { convertKey } from "../convert/interfaces/conversion.interfaces";
 import { ExchangeRates } from "../convert/interfaces/exchangeRates.interface";
 import { lastValueFrom } from "rxjs";
-import {LoggerProvider} from "../logger/logger";
+import { LoggerProvider } from "../logger/logger";
 import { ExternalCurrencyClient } from "./currencyLayerClient.interface";
-import { CURRENCY_LAYER_CONFIG } from "../constants/currencyLayerConfig";
-import { ConfigService } from '@nestjs/config';
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class CurrencyLayerClient implements ExternalCurrencyClient {
+  private readonly apiKey: string;
   constructor(
-    @Inject(CURRENCY_LAYER_CONFIG) readonly config,
     private readonly httpService: HttpService,
-    private readonly logger: LoggerProvider ,
-    private readonly configService: ConfigService ,
+    private readonly logger: LoggerProvider,
+    private readonly configService: ConfigService
   ) {
-    if (!this.config.apiKey) {
+    this.apiKey = configService.get<string>("apiKey");
+    if (!this.apiKey) {
       throw new Error("apiKey must be provided");
     }
   }
 
   async getHistoricalRates(data: convertKey): Promise<ExchangeRates> {
-    const requestUrl = this.buildRequestUrl(this.configService.get<string>('historicalEndpoint'), {
-      source: data.source,
-      destination: data.destination,
-      date: data.date,
-    });
+    const requestUrl = this.buildRequestUrl(
+      this.configService.get<string>("historicalEndpoint"),
+      {
+        source: data.source,
+        destination: data.destination,
+        date: data.date,
+      }
+    );
     const response = await this.httpService.get<ExchangeRates>(
       requestUrl.toString()
     );
@@ -50,19 +53,21 @@ export class CurrencyLayerClient implements ExternalCurrencyClient {
   }
 
   private buildRequestUrl(endpoint: string, data: convertKey): URL {
-    const currencies =
+    const currencies: string =
       data.destination.length > 1
         ? data.destination.join(",")
-        : data.destination;
+        : data.destination.toString();
 
     const queryParams = new URLSearchParams([
-      ["access_key", this.config.apiKey],
+      ["access_key", this.apiKey],
       ["date", data.date],
       ["currencies", currencies],
       ["source", data.source],
     ]);
 
-    const url = new URL(`${this.configService.get<string>('baseUrlHttps')}${endpoint}`);
+    const url = new URL(
+      `${this.configService.get<string>("baseUrlHttps")}${endpoint}`
+    );
     url.search = queryParams.toString();
     return url;
   }
