@@ -3,7 +3,7 @@ export interface Logger {
   debug(
     message: string,
     metadata?: Record<string, any>,
-    context?: string,
+    context?: string
   ): void;
   warn(message: string, metadata?: Record<string, any>, context?: string): void;
   info(message: string, metadata?: Record<string, any>, context?: string): void;
@@ -11,7 +11,7 @@ export interface Logger {
     message: string,
     metadata?: Record<string, any>,
     error?: unknown,
-    context?: string,
+    context?: string
   ): void;
 }
 
@@ -23,7 +23,7 @@ export class ConsoleLogger implements Logger {
   debug(
     message: string,
     metadata?: Record<string, any>,
-    context?: string,
+    context?: string
   ): void {
     console.debug(message, this.wrapLogMetadata({ metadata, context }));
   }
@@ -31,7 +31,7 @@ export class ConsoleLogger implements Logger {
   warn(
     message: string,
     metadata?: Record<string, any>,
-    context?: string,
+    context?: string
   ): void {
     console.warn(message, this.wrapLogMetadata({ metadata, context }));
   }
@@ -39,7 +39,7 @@ export class ConsoleLogger implements Logger {
   info(
     message: string,
     metadata?: Record<string, any>,
-    context?: string,
+    context?: string
   ): void {
     console.info(message, this.wrapLogMetadata({ metadata, context }));
   }
@@ -48,10 +48,10 @@ export class ConsoleLogger implements Logger {
     message: string,
     metadata?: Record<string, any>,
     error?: unknown,
-    context?: string,
+    context?: string
   ): void {
     if (error instanceof Error && metadata) {
-      metadata['error'] = {
+      metadata["error"] = {
         message: error.message,
         stack: error.stack,
         name: error.name,

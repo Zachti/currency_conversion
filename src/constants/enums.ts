@@ -1,1 +1,6 @@
-export enum Currency{'USD' , 'ILS' , 'EUR' , 'GBP'}
+export enum Currency {
+  "USD",
+  "ILS",
+  "EUR",
+  "GBP",
+}

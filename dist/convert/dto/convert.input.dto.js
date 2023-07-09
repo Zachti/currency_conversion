@@ -35,7 +35,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Validate)(IsDateISO8601_1.IsDateISO8601),
     (0, class_validator_1.Validate)(IsDateIsPastOrPresent_1.IsDateIsPastOrPresent),
-    (0, class_validator_1.Validate)(isDateAfterValidator_1.IsDateAfter, ['2010-01-01'], { message: constants_1.dateMessage2010 }),
+    (0, class_validator_1.Validate)(isDateAfterValidator_1.IsDateAfter, ["2010-01-01"], { message: constants_1.dateMessage2010 }),
     __metadata("design:type", String)
 ], ConvertInputDto.prototype, "date", void 0);
 //# sourceMappingURL=convert.input.dto.js.map

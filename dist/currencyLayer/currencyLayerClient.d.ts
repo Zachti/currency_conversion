@@ -1,7 +1,7 @@
 import { HttpService } from "@nestjs/axios";
 import { convertKey } from "../convert/interfaces/conversion.interfaces";
 import { ExchangeRates } from "../convert/interfaces/exchangeRates.interface";
-import { Logger } from '../logger/logger';
+import { Logger } from "../logger/logger";
 import { ExternalCurrencyClient } from "./currencyLayerClient.interface";
 export declare class CurrencyLayerClient implements ExternalCurrencyClient {
     readonly config: any;

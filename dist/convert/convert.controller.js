@@ -25,7 +25,7 @@ let ConvertController = exports.ConvertController = class ConvertController {
         this.logger = logger;
     }
     async convert(query) {
-        this.logger.log('debug', 'convert query', { query: JSON.stringify(query) });
+        this.logger.log("debug", "convert query", { query: JSON.stringify(query) });
         return this.convertService.convert(query);
     }
 };
@@ -39,7 +39,7 @@ __decorate([
 ], ConvertController.prototype, "convert", null);
 exports.ConvertController = ConvertController = __decorate([
     (0, common_1.UseInterceptors)(transformInterceptor_1.TransformInterceptor),
-    (0, common_1.Controller)('convert'),
+    (0, common_1.Controller)("convert"),
     __param(1, (0, common_1.Inject)(loggerProvider_1.Logger_Provider)),
     __metadata("design:paramtypes", [convert_service_1.ConvertService, Object])
 ], ConvertController);

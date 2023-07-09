@@ -1,38 +1,42 @@
-import {Inject, Injectable} from '@nestjs/common';
-import { ConvertInputDto } from './dto/convert.input.dto';
-import { Big } from 'big.js';
-import { Cache } from 'cache-manager';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable } from "@nestjs/common";
+import { ConvertInputDto } from "./dto/convert.input.dto";
+import { Big } from "big.js";
+import { Cache } from "cache-manager";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import {
   conversionData,
   conversionOutput,
   convertKey,
-} from './interfaces/conversion.interfaces';
-import {ExchangeRates} from "./interfaces/exchangeRates.interface";
-import {Logger} from "../logger/logger";
-import {ExternalCurrencyClient} from "../currencyLayer/currencyLayerClient.interface";
-import {Logger_Provider} from "../logger/loggerProvider";
-import {Currency_Provider} from "../currencyLayer/currencyProvider";
-
+} from "./interfaces/conversion.interfaces";
+import { ExchangeRates } from "./interfaces/exchangeRates.interface";
+import { Logger } from "../logger/logger";
+import { ExternalCurrencyClient } from "../currencyLayer/currencyLayerClient.interface";
+import { Logger_Provider } from "../logger/loggerProvider";
+import { Currency_Provider } from "../constants/currencyProvider";
 
 @Injectable()
 export class ConvertService {
-
-  constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache ,
-              @Inject(Currency_Provider) private readonly client: ExternalCurrencyClient ,
-              @Inject(Logger_Provider)private readonly logger: Logger
-) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    @Inject(Currency_Provider) private readonly client: ExternalCurrencyClient,
+    @Inject(Logger_Provider) private readonly logger: Logger
+  ) {}
 
   async convert(query: ConvertInputDto) {
     const exchangeRates = await this.fetchExchangeRates(query);
     return exchangeRates.rates.map((rate, timestamp) =>
-        ConvertService.Conversion({rate : rate.rate, query, timestamp, currency: rate.currency}),
+      ConvertService.Conversion({
+        rate: rate.rate,
+        query,
+        timestamp,
+        currency: rate.currency,
+      })
     );
   }
 
   private async fetchExchangeRates(
-      query: ConvertInputDto,): Promise<ExchangeRates> {
-
+    query: ConvertInputDto
+  ): Promise<ExchangeRates> {
     const input: convertKey = {
       source: query.source,
       destination: query.destination,
@@ -41,8 +45,8 @@ export class ConvertService {
     const cacheKey = this.generateCacheKey(input);
     return this.cacheManager.wrap(cacheKey, async () => {
       this.logger.log(
-          'info',
-          'Exchange rates were not found in cache, getting from external',
+        "info",
+        "Exchange rates were not found in cache, getting from external"
       );
       return await this.fetchFromExternal(input);
     });
@@ -51,41 +55,45 @@ export class ConvertService {
   private static Conversion(data: conversionData): conversionOutput {
     const rate = new Big(data.rate);
     const amount = new Big(data.query.amount);
-    const result= rate.times(amount).toFixed(4);
+    const result = rate.times(amount).toFixed(4);
 
     return {
       source: data.query.source,
       destination: data.currency,
       timestamp: data.timestamp,
-      amount: amount.toNumber() ,
-      rate: rate.toNumber() ,
+      amount: amount.toNumber(),
+      rate: rate.toNumber(),
       result,
     };
   }
 
   private async fetchFromExternal(input: convertKey): Promise<ExchangeRates> {
-      const exchangeRates = await this.client.getHistoricalRates({date : input.date, source : input.source, destination : input.destination,});
-      const rates: { currency: string; rate: number }[] = [];
+    const exchangeRates = await this.client.getHistoricalRates({
+      date: input.date,
+      source: input.source,
+      destination: input.destination,
+    });
+    const rates: { currency: string; rate: number }[] = [];
 
-      input.destination.forEach((destination) => {
-        const currencyCode = `${input.source}${destination}`;
-        const rate = exchangeRates.quotes[currencyCode];
-        if (rate) {
-          rates.push({
-            currency: destination,
-            rate,
-          });
-        }
-      });
+    input.destination.forEach((destination) => {
+      const currencyCode = `${input.source}${destination}`;
+      const rate = exchangeRates.quotes[currencyCode];
+      if (rate) {
+        rates.push({
+          currency: destination,
+          rate,
+        });
+      }
+    });
 
-      return {
-        ...exchangeRates,
-        rates,
-      };
+    return {
+      ...exchangeRates,
+      rates,
+    };
   }
 
   private generateCacheKey(input: convertKey): string {
-    const destinations = input.destination.join(',');
+    const destinations = input.destination.join(",");
     return `exchange_rates:${input.source}_${destinations}_${input.date}`;
   }
 }

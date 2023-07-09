@@ -1,7 +1,7 @@
-import {ConsoleLogger} from "./logger";
+import { ConsoleLogger } from "./logger";
 
-export const LoggerProvider =  {
-    provide: 'logger',
-    useClass: ConsoleLogger
-}
-export const Logger_Provider = 'logger';
+export const LoggerProvider = {
+  provide: "logger",
+  useClass: ConsoleLogger,
+};
+export const Logger_Provider = "logger";

@@ -18,7 +18,7 @@ const common_1 = require("@nestjs/common");
 const big_js_1 = require("big.js");
 const cache_manager_1 = require("@nestjs/cache-manager");
 const loggerProvider_1 = require("../logger/loggerProvider");
-const currencyProvider_1 = require("../currencyLayer/currencyProvider");
+const currencyProvider_1 = require("../constants/currencyProvider");
 let ConvertService = exports.ConvertService = ConvertService_1 = class ConvertService {
     constructor(cacheManager, client, logger) {
         this.cacheManager = cacheManager;
@@ -27,7 +27,12 @@ let ConvertService = exports.ConvertService = ConvertService_1 = class ConvertSe
     }
     async convert(query) {
         const exchangeRates = await this.fetchExchangeRates(query);
-        return exchangeRates.rates.map((rate, timestamp) => ConvertService_1.Conversion({ rate: rate.rate, query, timestamp, currency: rate.currency }));
+        return exchangeRates.rates.map((rate, timestamp) => ConvertService_1.Conversion({
+            rate: rate.rate,
+            query,
+            timestamp,
+            currency: rate.currency,
+        }));
     }
     async fetchExchangeRates(query) {
         const input = {
@@ -37,7 +42,7 @@ let ConvertService = exports.ConvertService = ConvertService_1 = class ConvertSe
         };
         const cacheKey = this.generateCacheKey(input);
         return this.cacheManager.wrap(cacheKey, async () => {
-            this.logger.log('info', 'Exchange rates were not found in cache, getting from external');
+            this.logger.log("info", "Exchange rates were not found in cache, getting from external");
             return await this.fetchFromExternal(input);
         });
     }
@@ -55,7 +60,11 @@ let ConvertService = exports.ConvertService = ConvertService_1 = class ConvertSe
         };
     }
     async fetchFromExternal(input) {
-        const exchangeRates = await this.client.getHistoricalRates({ date: input.date, source: input.source, destination: input.destination, });
+        const exchangeRates = await this.client.getHistoricalRates({
+            date: input.date,
+            source: input.source,
+            destination: input.destination,
+        });
         const rates = [];
         input.destination.forEach((destination) => {
             const currencyCode = `${input.source}${destination}`;
@@ -73,7 +82,7 @@ let ConvertService = exports.ConvertService = ConvertService_1 = class ConvertSe
         };
     }
     generateCacheKey(input) {
-        const destinations = input.destination.join(',');
+        const destinations = input.destination.join(",");
         return `exchange_rates:${input.source}_${destinations}_${input.date}`;
     }
 };

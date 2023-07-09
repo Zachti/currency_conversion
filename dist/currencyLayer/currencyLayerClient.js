@@ -26,28 +26,39 @@ let CurrencyLayerClient = exports.CurrencyLayerClient = class CurrencyLayerClien
         this.httpService = httpService;
         this.logger = logger;
         if (!this.config.apiKey) {
-            throw new Error('apiKey must be provided');
+            throw new Error("apiKey must be provided");
         }
     }
     async getHistoricalRates(data) {
-        const requestUrl = this.buildRequestUrl(constants_1.HISTORICAL_ENDPOINT, { source: data.source, destination: data.destination, date: data.date });
+        const requestUrl = this.buildRequestUrl(constants_1.HISTORICAL_ENDPOINT, {
+            source: data.source,
+            destination: data.destination,
+            date: data.date,
+        });
         const response = await this.httpService.get(requestUrl.toString());
-        return (0, rxjs_1.lastValueFrom)(response).then(res => res.data).then(this.handleErrors);
+        return (0, rxjs_1.lastValueFrom)(response)
+            .then((res) => res.data)
+            .then(this.handleErrors);
     }
     handleErrors(res) {
         if (!res.success) {
             this.logger.error(`Error in fetching external currencies - code : ${res.error.code}. info : ${res.error.info}.`);
-            throw new currencyLayerError_1.CurrencyLayerError({ code: res.error.code, message: res.error.info });
+            throw new currencyLayerError_1.CurrencyLayerError({
+                code: res.error.code,
+                message: res.error.info,
+            });
         }
         return res;
     }
     buildRequestUrl(endpoint, data) {
-        const currencies = data.destination.length > 1 ? data.destination.join(',') : data.destination;
+        const currencies = data.destination.length > 1
+            ? data.destination.join(",")
+            : data.destination;
         const queryParams = new URLSearchParams([
-            ['access_key', this.config.apiKey],
-            ['date', data.date],
-            ['currencies', currencies],
-            ['source', data.source],
+            ["access_key", this.config.apiKey],
+            ["date", data.date],
+            ["currencies", currencies],
+            ["source", data.source],
         ]);
         const url = new URL(`${constants_1.BASE_URL_HTTPS}${endpoint}`);
         url.search = queryParams.toString();

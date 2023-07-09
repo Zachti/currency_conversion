@@ -1,14 +1,14 @@
-import {Module} from '@nestjs/common';
-import { ConvertController } from './convert.controller';
-import { ConvertService } from './convert.service';
-import {CurrencyLayerModule} from "../currencyLayer/currencyLayerModule";
-import {LoggerProvider} from "../logger/loggerProvider";
-import {CurrencyProvider} from "../currencyLayer/currencyProvider";
+import { Module } from "@nestjs/common";
+import { ConvertController } from "./convert.controller";
+import { ConvertService } from "./convert.service";
+import { CurrencyLayerModule } from "../currencyLayer/currencyLayerModule";
+import { LoggerProvider } from "../logger/loggerProvider";
+import { CurrencyProvider } from "../constants/currencyProvider";
 
 @Module({
-  imports: [CurrencyLayerModule] ,
+  imports: [CurrencyLayerModule],
   controllers: [ConvertController],
-  providers: [ConvertService, LoggerProvider , CurrencyProvider],
-  exports: [ConvertService]
+  providers: [ConvertService, LoggerProvider, CurrencyProvider],
+  exports: [ConvertService],
 })
 export class ConvertModule {}

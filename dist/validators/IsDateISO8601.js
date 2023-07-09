@@ -19,6 +19,6 @@ let IsDateISO8601 = exports.IsDateISO8601 = class IsDateISO8601 {
     }
 };
 exports.IsDateISO8601 = IsDateISO8601 = __decorate([
-    (0, class_validator_1.ValidatorConstraint)({ name: 'isDateISO8601', async: false })
+    (0, class_validator_1.ValidatorConstraint)({ name: "isDateISO8601", async: false })
 ], IsDateISO8601);
 //# sourceMappingURL=IsDateISO8601.js.map

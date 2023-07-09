@@ -1,4 +1,4 @@
-import { ConvertInputDto } from '../dto/convert.input.dto';
+import { ConvertInputDto } from "../dto/convert.input.dto";
 export interface conversionData {
     rate: number;
     query: ConvertInputDto;

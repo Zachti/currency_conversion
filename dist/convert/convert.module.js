@@ -12,7 +12,7 @@ const convert_controller_1 = require("./convert.controller");
 const convert_service_1 = require("./convert.service");
 const currencyLayerModule_1 = require("../currencyLayer/currencyLayerModule");
 const loggerProvider_1 = require("../logger/loggerProvider");
-const currencyProvider_1 = require("../currencyLayer/currencyProvider");
+const currencyProvider_1 = require("../constants/currencyProvider");
 let ConvertModule = exports.ConvertModule = class ConvertModule {
 };
 exports.ConvertModule = ConvertModule = __decorate([
@@ -20,7 +20,7 @@ exports.ConvertModule = ConvertModule = __decorate([
         imports: [currencyLayerModule_1.CurrencyLayerModule],
         controllers: [convert_controller_1.ConvertController],
         providers: [convert_service_1.ConvertService, loggerProvider_1.LoggerProvider, currencyProvider_1.CurrencyProvider],
-        exports: [convert_service_1.ConvertService]
+        exports: [convert_service_1.ConvertService],
     })
 ], ConvertModule);
 //# sourceMappingURL=convert.module.js.map

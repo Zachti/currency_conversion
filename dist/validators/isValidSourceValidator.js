@@ -14,10 +14,12 @@ let ValidSourceValidator = exports.ValidSourceValidator = class ValidSourceValid
         return Object.values(enums_1.Currency).includes(source);
     }
     defaultMessage(args) {
-        return `Invalid currency. Allowed values are: ${Object.values(enums_1.Currency).filter((v) => isNaN(Number(v))).join(', ')}`;
+        return `Invalid currency. Allowed values are: ${Object.values(enums_1.Currency)
+            .filter((v) => isNaN(Number(v)))
+            .join(", ")}`;
     }
 };
 exports.ValidSourceValidator = ValidSourceValidator = __decorate([
-    (0, class_validator_1.ValidatorConstraint)({ name: 'validSource', async: false })
+    (0, class_validator_1.ValidatorConstraint)({ name: "validSource", async: false })
 ], ValidSourceValidator);
 //# sourceMappingURL=isValidSourceValidator.js.map

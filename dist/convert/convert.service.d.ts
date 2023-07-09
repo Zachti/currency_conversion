@@ -1,6 +1,6 @@
-import { ConvertInputDto } from './dto/convert.input.dto';
-import { Cache } from 'cache-manager';
-import { conversionOutput } from './interfaces/conversion.interfaces';
+import { ConvertInputDto } from "./dto/convert.input.dto";
+import { Cache } from "cache-manager";
+import { conversionOutput } from "./interfaces/conversion.interfaces";
 import { Logger } from "../logger/logger";
 import { ExternalCurrencyClient } from "../currencyLayer/currencyLayerClient.interface";
 export declare class ConvertService {

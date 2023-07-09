@@ -27,7 +27,7 @@ exports.AppModule = AppModule = __decorate([
             currencyLayerModule_1.CurrencyLayerModule,
         ],
         controllers: [app_controller_1.AppController, convert_controller_1.ConvertController],
-        providers: [app_service_1.AppService, loggerProvider_1.LoggerProvider]
+        providers: [app_service_1.AppService, loggerProvider_1.LoggerProvider],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

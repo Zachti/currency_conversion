@@ -3,9 +3,9 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 export interface Response<T> {
   success: boolean;
@@ -19,14 +19,14 @@ export class TransformInterceptor<T>
 {
   intercept(
     context: ExecutionContext,
-    next: CallHandler,
+    next: CallHandler
   ): Observable<Response<T>> {
     return next.handle().pipe(
       map((data) => {
         if (data) {
           return { success: true, error: 0, data };
         }
-      }),
+      })
     );
   }
 }

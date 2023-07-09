@@ -1,6 +1,6 @@
-import { ConvertInputDto } from './dto/convert.input.dto';
-import { ConvertService } from './convert.service';
-import { Logger } from '../logger/logger';
+import { ConvertInputDto } from "./dto/convert.input.dto";
+import { ConvertService } from "./convert.service";
+import { Logger } from "../logger/logger";
 export declare class ConvertController {
     private readonly convertService;
     private readonly logger;

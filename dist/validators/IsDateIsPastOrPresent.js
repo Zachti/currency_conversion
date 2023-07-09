@@ -19,6 +19,6 @@ let IsDateIsPastOrPresent = exports.IsDateIsPastOrPresent = class IsDateIsPastOr
     }
 };
 exports.IsDateIsPastOrPresent = IsDateIsPastOrPresent = __decorate([
-    (0, class_validator_1.ValidatorConstraint)({ name: 'isDateIsPastOrPresent', async: false })
+    (0, class_validator_1.ValidatorConstraint)({ name: "isDateIsPastOrPresent", async: false })
 ], IsDateIsPastOrPresent);
 //# sourceMappingURL=IsDateIsPastOrPresent.js.map

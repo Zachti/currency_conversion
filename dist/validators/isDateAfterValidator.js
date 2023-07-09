@@ -16,6 +16,6 @@ let IsDateAfter = exports.IsDateAfter = class IsDateAfter {
     }
 };
 exports.IsDateAfter = IsDateAfter = __decorate([
-    (0, class_validator_1.ValidatorConstraint)({ name: 'isDateAfter', async: false })
+    (0, class_validator_1.ValidatorConstraint)({ name: "isDateAfter", async: false })
 ], IsDateAfter);
 //# sourceMappingURL=isDateAfterValidator.js.map

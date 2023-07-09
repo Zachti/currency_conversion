@@ -16,7 +16,7 @@ class ConsoleLogger {
     }
     error(message, metadata, error, context) {
         if (error instanceof Error && metadata) {
-            metadata['error'] = {
+            metadata["error"] = {
                 message: error.message,
                 stack: error.stack,
                 name: error.name,
