@@ -5,9 +5,8 @@ import { HttpService } from "@nestjs/axios";
 import { convertKey } from "../convert/interfaces/conversion.interfaces";
 import { ExchangeRates } from "../convert/interfaces/exchangeRates.interface";
 import { lastValueFrom } from "rxjs";
-import { Logger } from "../logger/logger";
+import {LoggerProvider} from "../logger/logger";
 import { ExternalCurrencyClient } from "./currencyLayerClient.interface";
-import { Logger_Provider } from "../logger/loggerProvider";
 import { CURRENCY_LAYER_CONFIG } from "../constants/currencyLayerConfig";
 
 @Injectable()
@@ -15,7 +14,7 @@ export class CurrencyLayerClient implements ExternalCurrencyClient {
   constructor(
     @Inject(CURRENCY_LAYER_CONFIG) readonly config,
     private readonly httpService: HttpService,
-    @Inject(Logger_Provider) private logger: Logger
+    private logger: LoggerProvider
   ) {
     if (!this.config.apiKey) {
       throw new Error("apiKey must be provided");
@@ -33,10 +32,10 @@ export class CurrencyLayerClient implements ExternalCurrencyClient {
     );
     return lastValueFrom(response)
       .then((res) => res.data)
-      .then(this.handleErrors);
+      .then(this.handleResponseData);
   }
 
-  private handleErrors(res: any) {
+  private handleResponseData(res: any) {
     if (!res.success) {
       this.logger.error(
         `Error in fetching external currencies - code : ${res.error.code}. info : ${res.error.info}.`

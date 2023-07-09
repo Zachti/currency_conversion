@@ -7,11 +7,10 @@ export const currencyLayerConfig = {
   name: "CurrencyLayer",
 };
 
-export const currencyLayerProviders = [
+export const currencyLayerProvider =
   {
     provide: "CURRENCY_LAYER_CONFIG",
     useValue: currencyLayerConfig,
-  },
-];
+  };
 
 export const CURRENCY_LAYER_CONFIG = "CURRENCY_LAYER_CONFIG";

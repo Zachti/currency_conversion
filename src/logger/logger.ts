@@ -15,7 +15,7 @@ export interface Logger {
   ): void;
 }
 
-export class ConsoleLogger implements Logger {
+export class LoggerProvider implements Logger {
   log(message: any, ...optionalParams: any[]): void {
     console.log(message, ...optionalParams);
   }

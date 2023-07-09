@@ -1,12 +1,12 @@
 import { Module } from "@nestjs/common";
 import { HttpModule } from "@nestjs/axios";
-import { currencyLayerProviders } from "../constants/currencyLayerConfig";
+import { currencyLayerProvider } from "../constants/currencyLayerConfig";
 import { CurrencyLayerClient } from "./currencyLayerClient";
-import { LoggerProvider } from "../logger/loggerProvider";
+import {LoggerModule} from "../logger/logger.module";
 
 @Module({
-  imports: [HttpModule],
-  providers: [...currencyLayerProviders, CurrencyLayerClient, LoggerProvider],
-  exports: [...currencyLayerProviders, CurrencyLayerClient, HttpModule],
+  imports: [HttpModule , LoggerModule],
+  providers: [currencyLayerProvider, CurrencyLayerClient],
+  exports: [currencyLayerProvider, CurrencyLayerClient, HttpModule],
 })
 export class CurrencyLayerModule {}

@@ -9,23 +9,22 @@ import {
   convertKey,
 } from "./interfaces/conversion.interfaces";
 import { ExchangeRates } from "./interfaces/exchangeRates.interface";
-import { Logger } from "../logger/logger";
+import { LoggerProvider } from "../logger/logger";
 import { ExternalCurrencyClient } from "../currencyLayer/currencyLayerClient.interface";
-import { Logger_Provider } from "../logger/loggerProvider";
-import { Currency_Provider } from "../constants/currencyProvider";
+import { Currency_Client_Provider } from "../constants/currencyProvider";
 
 @Injectable()
 export class ConvertService {
   constructor(
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-    @Inject(Currency_Provider) private readonly client: ExternalCurrencyClient,
-    @Inject(Logger_Provider) private readonly logger: Logger
+    @Inject(Currency_Client_Provider) private readonly client: ExternalCurrencyClient,
+    private readonly logger: LoggerProvider
   ) {}
 
   async convert(query: ConvertInputDto) {
     const exchangeRates = await this.fetchExchangeRates(query);
     return exchangeRates.rates.map((rate, timestamp) =>
-      ConvertService.Conversion({
+      this.performConversion({
         rate: rate.rate,
         query,
         timestamp,
@@ -52,7 +51,7 @@ export class ConvertService {
     });
   }
 
-  private static Conversion(data: conversionData): conversionOutput {
+  private performConversion(data: conversionData): conversionOutput {
     const rate = new Big(data.rate);
     const amount = new Big(data.query.amount);
     const result = rate.times(amount).toFixed(4);

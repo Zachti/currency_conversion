@@ -3,22 +3,18 @@ import {
   Controller,
   Post,
   UseInterceptors,
-  Inject,
   ValidationPipe,
 } from "@nestjs/common";
 import { CacheInterceptor } from "@nestjs/cache-manager";
-import { TransformInterceptor } from "../interceptors/transformInterceptor";
 import { ConvertInputDto } from "./dto/convert.input.dto";
 import { ConvertService } from "./convert.service";
-import { Logger } from "../logger/logger";
-import { Logger_Provider } from "../logger/loggerProvider";
+import {LoggerProvider} from "../logger/logger";
 
-@UseInterceptors(TransformInterceptor)
 @Controller("convert")
 export class ConvertController {
   constructor(
     private readonly convertService: ConvertService,
-    @Inject(Logger_Provider) private readonly logger: Logger
+    private readonly logger: LoggerProvider
   ) {}
 
   @UseInterceptors(CacheInterceptor)
