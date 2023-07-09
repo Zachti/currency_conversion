@@ -1,25 +1,28 @@
-import {Body, Controller, Post, UseInterceptors, Inject, ValidationPipe} from '@nestjs/common';
-import {CacheInterceptor} from '@nestjs/cache-manager';
-import {TransformInterceptor} from '../interceptors/transformInterceptor';
-import {ConvertInputDto} from './dto/convert.input.dto';
-import {ConvertService} from './convert.service';
-import {Logger} from '../logger'
-import {Logger_Provider} from "../constants/constants";
+import {
+  Body,
+  Controller,
+  Post,
+  UseInterceptors,
+  ValidationPipe,
+} from "@nestjs/common";
+import { CacheInterceptor } from "@nestjs/cache-manager";
+import { ConvertInputDto } from "./dto/convert.input.dto";
+import { ConvertService } from "./convert.service";
+import { LoggerProvider } from "../logger/logger";
 
-
-@UseInterceptors(TransformInterceptor)
-@Controller('convert')
+@Controller("convert")
 export class ConvertController {
-    constructor(
-        private readonly convertService: ConvertService,
-        @Inject(Logger_Provider)private readonly logger: Logger,
-    ) {
-    }
+  constructor(
+    private readonly convertService: ConvertService,
+    private readonly logger: LoggerProvider
+  ) {}
 
-    @UseInterceptors(CacheInterceptor)
-    @Post()
-    async convert(@Body(new ValidationPipe()) query: ConvertInputDto): Promise<any> {
-        this.logger.log('debug', 'convert query', {query: JSON.stringify(query)});
-        return this.convertService.convert(query);
-    }
+  @UseInterceptors(CacheInterceptor)
+  @Post()
+  async convert(
+    @Body(new ValidationPipe()) query: ConvertInputDto
+  ): Promise<any> {
+    this.logger.log("debug", "convert query", { query: JSON.stringify(query) });
+    return this.convertService.convert(query);
+  }
 }

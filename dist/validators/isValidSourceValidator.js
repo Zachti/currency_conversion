@@ -11,14 +11,15 @@ const class_validator_1 = require("class-validator");
 const enums_1 = require("../constants/enums");
 let ValidSourceValidator = exports.ValidSourceValidator = class ValidSourceValidator {
     validate(source, args) {
-        console.log(source);
         return Object.values(enums_1.Currency).includes(source);
     }
     defaultMessage(args) {
-        return `Invalid currency. Allowed values are: ${Object.values(enums_1.Currency).join(', ')}`;
+        return `Invalid currency. Allowed values are: ${Object.values(enums_1.Currency)
+            .filter((v) => isNaN(Number(v)))
+            .join(", ")}`;
     }
 };
 exports.ValidSourceValidator = ValidSourceValidator = __decorate([
-    (0, class_validator_1.ValidatorConstraint)({ name: 'validSource', async: false })
+    (0, class_validator_1.ValidatorConstraint)({ name: "validSource", async: false })
 ], ValidSourceValidator);
 //# sourceMappingURL=isValidSourceValidator.js.map
