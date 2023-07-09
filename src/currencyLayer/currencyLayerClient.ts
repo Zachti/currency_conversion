@@ -1,33 +1,30 @@
 import { CurrencyLayerError } from "./currencyLayerError";
 import { Injectable } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
-import { convertKey } from "../convert/interfaces/conversion.interfaces";
-import { ExchangeRates } from "../convert/interfaces/exchangeRates.interface";
+import { getRatesInput } from "../convert/interfaces/conversion.interfaces";
+import {ExchangeRates} from "../convert/interfaces/exchangeRates.interface";
 import { lastValueFrom } from "rxjs";
 import { LoggerProvider } from "../logger/logger";
-import { ExternalCurrencyClient } from "./currencyLayerClient.interface";
+import { ExchangeRatesDatasource } from "./currencyLayerClient.interface";
 import { ConfigService } from "@nestjs/config";
 
 @Injectable()
-export class CurrencyLayerClient implements ExternalCurrencyClient {
+export class CurrencyLayerClient implements ExchangeRatesDatasource {
   private readonly apiKey: string;
   constructor(
     private readonly httpService: HttpService,
     private readonly logger: LoggerProvider,
     private readonly configService: ConfigService
   ) {
-    this.apiKey = configService.get<string>("apiKey");
-    if (!this.apiKey) {
-      throw new Error("apiKey must be provided");
-    }
+    this.apiKey = configService.getOrThrow<string>('currencyLayerConfig.apiKey');
   }
 
-  async getHistoricalRates(data: convertKey): Promise<ExchangeRates> {
+  async getRates(data: getRatesInput): Promise<ExchangeRates> {
     const requestUrl = this.buildRequestUrl(
-      this.configService.get<string>("historicalEndpoint"),
+      this.configService.getOrThrow<string>('currencyLayerConfig.historicalEndpoint'),
       {
         source: data.source,
-        destination: data.destination,
+        destinations: data.destinations,
         date: data.date,
       }
     );
@@ -35,11 +32,10 @@ export class CurrencyLayerClient implements ExternalCurrencyClient {
       requestUrl.toString()
     );
     return lastValueFrom(response)
-      .then((res) => res.data)
-      .then(this.handleResponseData);
+        .then(res => this.handleResponseData(res.data , data.destinations));
   }
 
-  private handleResponseData(res: any) {
+  private handleResponseData(res: any , destinations: string[]) {
     if (!res.success) {
       this.logger.error(
         `Error in fetching external currencies - code : ${res.error.code}. info : ${res.error.info}.`
@@ -49,14 +45,34 @@ export class CurrencyLayerClient implements ExternalCurrencyClient {
         message: res.error.info,
       });
     }
-    return res;
+    return this.addRatesToResponseData(res , destinations);
   }
 
-  private buildRequestUrl(endpoint: string, data: convertKey): URL {
-    const currencies: string =
-      data.destination.length > 1
-        ? data.destination.join(",")
-        : data.destination.toString();
+  private addRatesToResponseData(res: any , destinations: string[]): Promise<ExchangeRates> {
+    const rates = [];
+
+    destinations.forEach((destination) => {
+      const currencyCode = `${res.source}${destination}`;
+      const rate = res.quotes[currencyCode];
+      if (rate) {
+        rates.push({
+          currency: destination,
+          rate,
+        });
+      }
+    });
+
+    return {
+      ...res,
+      rates,
+    };
+  }
+
+  private buildRequestUrl(endpoint: string, data: getRatesInput): URL {
+    const currencies =
+      data.destinations.length > 1
+        ? data.destinations.join(",")
+        : data.destinations.toString();
 
     const queryParams = new URLSearchParams([
       ["access_key", this.apiKey],
@@ -66,9 +82,10 @@ export class CurrencyLayerClient implements ExternalCurrencyClient {
     ]);
 
     const url = new URL(
-      `${this.configService.get<string>("baseUrlHttps")}${endpoint}`
+      `${this.configService.get<string>('currencyLayerConfig.baseUrlHttps')}${endpoint}`
     );
     url.search = queryParams.toString();
     return url;
   }
 }
+
