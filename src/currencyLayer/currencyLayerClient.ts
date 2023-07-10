@@ -2,7 +2,7 @@ import { CurrencyLayerError } from "./currencyLayerError";
 import { Injectable } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { getRatesInput } from "../convert/interfaces/conversion.interfaces";
-import {ExchangeRates} from "../convert/interfaces/exchangeRates.interface";
+import { ExchangeRates } from "../convert/interfaces/exchangeRates.interface";
 import { lastValueFrom } from "rxjs";
 import { LoggerProvider } from "../logger/logger";
 import { ExchangeRatesDatasource } from "./currencyLayerClient.interface";
@@ -16,12 +16,16 @@ export class CurrencyLayerClient implements ExchangeRatesDatasource {
     private readonly logger: LoggerProvider,
     private readonly configService: ConfigService
   ) {
-    this.apiKey = configService.getOrThrow<string>('currencyLayerConfig.apiKey');
+    this.apiKey = configService.getOrThrow<string>(
+      "currencyLayerConfig.apiKey"
+    );
   }
 
   async getRates(data: getRatesInput): Promise<ExchangeRates> {
     const requestUrl = this.buildRequestUrl(
-      this.configService.getOrThrow<string>('currencyLayerConfig.historicalEndpoint'),
+      this.configService.getOrThrow<string>(
+        "currencyLayerConfig.historicalEndpoint"
+      ),
       {
         source: data.source,
         destinations: data.destinations,
@@ -31,11 +35,15 @@ export class CurrencyLayerClient implements ExchangeRatesDatasource {
     const response = await this.httpService.get<ExchangeRates>(
       requestUrl.toString()
     );
-    return lastValueFrom(response)
-        .then(res => this.handleResponseData(res.data , data.destinations));
+    return lastValueFrom(response).then((res) =>
+      this.handleResponseData(res.data, data.destinations)
+    );
   }
 
-  private handleResponseData(res: any , destinations: string[]) : Promise<ExchangeRates> {
+  private handleResponseData(
+    res: any,
+    destinations: string[]
+  ): Promise<ExchangeRates> {
     if (!res.success) {
       this.logger.error(
         `Error in fetching external currencies - code : ${res.error.code}. info : ${res.error.info}.`
@@ -45,10 +53,13 @@ export class CurrencyLayerClient implements ExchangeRatesDatasource {
         message: res.error.info,
       });
     }
-    return this.addRatesToResponseData(res , destinations);
+    return this.addRatesToResponseData(res, destinations);
   }
 
-  private addRatesToResponseData(res: any , destinations: string[]): Promise<ExchangeRates> {
+  private addRatesToResponseData(
+    res: any,
+    destinations: string[]
+  ): Promise<ExchangeRates> {
     const rates = [];
 
     destinations.forEach((destination) => {
@@ -88,4 +99,3 @@ export class CurrencyLayerClient implements ExchangeRatesDatasource {
     return url;
   }
 }
-

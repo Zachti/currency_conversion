@@ -1,5 +1,4 @@
 import { CurrencyLayerClient } from "../currencyLayer/currencyLayerClient";
-import {HttpModule} from "@nestjs/axios";
 
 export const Currency_Client_Provider = "external_currency_client";
 

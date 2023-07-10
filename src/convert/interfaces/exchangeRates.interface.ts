@@ -9,7 +9,7 @@ export interface ExchangeRates {
   quotes: {
     [currencyCode: string]: number;
   };
-  rates: rates[]
+  rates: rates[];
 }
 
 export interface rates {
