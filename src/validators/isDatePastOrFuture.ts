@@ -3,12 +3,10 @@ import {
   ValidatorConstraintInterface,
   ValidationArguments,
 } from "class-validator";
-import { DATE_MUST_BE_BETWEEN_2010_AND_PRESENT } from "../constants/constants";
+import { DATE_MUST_BE_BETWEEN_2010_AND_PRESENT } from "./invalidConstants";
 
 @ValidatorConstraint({ name: "isDateAfter", async: false })
-export class IsDateBetween2010AndPresent
-  implements ValidatorConstraintInterface
-{
+export class IsDatePastOrFuture implements ValidatorConstraintInterface {
   validate(
     dateReceived: string,
     validationArguments: ValidationArguments

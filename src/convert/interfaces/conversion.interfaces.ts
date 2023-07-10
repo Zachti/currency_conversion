@@ -7,9 +7,9 @@ export interface conversionData {
   currency: string;
 }
 
-export interface convertKey {
+export interface getRatesInput {
   source: string;
-  destination: string[];
+  destinations: string[];
   date: string;
 }
 
