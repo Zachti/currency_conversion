@@ -1,4 +1,6 @@
 import {
+  ArrayMaxSize,
+  ArrayMinSize,
   IsArray,
   IsNotEmpty,
   IsNumber,
@@ -10,21 +12,23 @@ import { ValidDestinationsValidator } from "../../validators/isValidDestinatiosV
 import { IsDatePastOrFuture } from "../../validators/isDatePastOrFuture";
 
 export class ConvertInputDto {
+  @IsString()
   @IsNotEmpty()
   readonly source: string;
 
-  @IsArray()
-  @IsNotEmpty()
   @Validate(ValidDestinationsValidator)
+  @ArrayMinSize(1)
+  @ArrayMaxSize(4)
+  @IsArray()
   readonly destinations: string[];
 
   @IsNumber()
   @IsNotEmpty()
   readonly amount: number;
 
-  @IsString()
   @IsNotEmpty()
   @Validate(IsDateISO8601)
   @Validate(IsDatePastOrFuture, ["2010-01-01"])
+  @IsString()
   readonly date: string;
 }

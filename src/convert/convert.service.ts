@@ -22,7 +22,7 @@ export class ConvertService {
     private readonly logger: LoggerProvider
   ) {}
 
-  async convert(query: ConvertInputDto) {
+  async convert(query: ConvertInputDto){
     const exchangeRates = await this.fetchExchangeRates(query);
     return exchangeRates.rates.map((rate, timestamp) =>
       this.createConversionOutput({

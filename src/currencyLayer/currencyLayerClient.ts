@@ -35,7 +35,7 @@ export class CurrencyLayerClient implements ExchangeRatesDatasource {
         .then(res => this.handleResponseData(res.data , data.destinations));
   }
 
-  private handleResponseData(res: any , destinations: string[]) {
+  private handleResponseData(res: any , destinations: string[]) : Promise<ExchangeRates> {
     if (!res.success) {
       this.logger.error(
         `Error in fetching external currencies - code : ${res.error.code}. info : ${res.error.info}.`
@@ -82,7 +82,7 @@ export class CurrencyLayerClient implements ExchangeRatesDatasource {
     ]);
 
     const url = new URL(
-      `${this.configService.get<string>('currencyLayerConfig.baseUrlHttps')}${endpoint}`
+      `${this.httpService.axiosRef.defaults.baseURL}${endpoint}`
     );
     url.search = queryParams.toString();
     return url;

@@ -8,7 +8,6 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
     imports: [ConfigModule],
     useFactory: (configService: ConfigService) => ({
       baseURL: configService.get<string>('currencyLayerConfig.baseUrlHttps'),
-
     }),
     inject: [ConfigService],
   }) , ConfigModule],
