@@ -1,1 +1,0 @@
-{"version":3,"file":"currencyLayerError.js","sourceRoot":"","sources":["../../src/currencyLayer/currencyLayerError.ts"],"names":[],"mappings":";;;AAAA,MAAa,kBAAmB,SAAQ,KAAK;IAG3C,YAAY,EAAE,IAAI,EAAE,OAAO,EAAqC;QAC9D,KAAK,CAAC,OAAO,CAAC,CAAC;QACf,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;QACjB,IAAI,CAAC,IAAI,GAAG,oBAAoB,CAAC;IACnC,CAAC;CACF;AARD,gDAQC"}
