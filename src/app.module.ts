@@ -4,23 +4,32 @@ import { ConvertModule } from "./convert/convert.module";
 import { ConvertController } from "./convert/convert.controller";
 import { CurrencyLayerModule } from "./currencyLayer/currencyLayerModule";
 import { LoggerModule } from "./logger/logger.module";
-import { ConfigModule } from "@nestjs/config";
-import {
-  currencyLayerConfig,
-  currencyLayerConfigurationValidationSchema
-} from "./currencyLayer/config/currencyLayer.config";
-import {HttpModule} from "@nestjs/axios";
-import {HealthModule} from "./health/health.module";
+import { ConfigModule, ConfigType } from "@nestjs/config";
+import { currencyLayerConfig } from "./config/currencyLayer.config";
+import { HealthModule } from "./health/health.module";
+import { redisConfig } from "./config/redis.config";
+import redisStore from "cache-manager-redis-store";
+import { StoreConfig } from "cache-manager";
+import { ConfigurationValidationSchema } from "./config/validationSchema";
 
 @Module({
   imports: [
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
+      useFactory: async (config: ConfigType<typeof redisConfig>) => {
+        return {
+          store: redisStore,
+          host: config.host,
+          port: config.port,
+          password: config.password
+        } as StoreConfig
+      },
+      inject: [redisConfig.KEY]
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [currencyLayerConfig],
-      validationSchema: currencyLayerConfigurationValidationSchema,
+      load: [currencyLayerConfig, redisConfig],
+      validationSchema: ConfigurationValidationSchema,
       validationOptions: { presence: 'required' }
     }),
     ConvertModule,

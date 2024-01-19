@@ -6,7 +6,7 @@ import { ExchangeRates } from "../convert/interfaces/exchangeRates.interface";
 import { lastValueFrom } from "rxjs";
 import { LoggerProvider } from "../logger/logger";
 import { ExchangeRatesDatasource } from "./currencyLayerClient.interface";
-import {currencyLayerConfig} from "./config/currencyLayer.config";
+import {currencyLayerConfig} from "../config/currencyLayer.config";
 import {ConfigType} from "@nestjs/config";
 
 @Injectable()
