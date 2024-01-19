@@ -10,6 +10,7 @@ import {
   currencyLayerConfigurationValidationSchema
 } from "./currencyLayer/config/currencyLayer.config";
 import {HttpModule} from "@nestjs/axios";
+import {HealthModule} from "./health/health.module";
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import {HttpModule} from "@nestjs/axios";
     ConvertModule,
     CurrencyLayerModule,
     LoggerModule,
+    HealthModule
   ],
   controllers: [ConvertController],
 })
