@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { ConvertService } from "../convert.service";
-import { AppModule } from "../../app/app.module";
+import { AppModule } from "../../app.module";
 import { ConvertModule } from "../convert.module";
 
 describe("ConvertService", () => {

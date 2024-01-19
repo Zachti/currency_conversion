@@ -1,7 +1,7 @@
 import * as request from "supertest";
 import { Test } from "@nestjs/testing";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
-import { AppModule } from "../../app/app.module";
+import { AppModule } from "../../app.module";
 import {
   DATE_MUST_BE_ISO8601,
   DATE_MUST_BE_BETWEEN_2010_AND_PRESENT,

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { ConvertController } from "../convert.controller";
-import { AppModule } from "../../app/app.module";
+import { AppModule } from "../../app.module";
 
 describe("Convert Controller", () => {
   let controller: ConvertController;

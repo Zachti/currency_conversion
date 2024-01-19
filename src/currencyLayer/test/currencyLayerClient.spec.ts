@@ -1,7 +1,7 @@
 import { CurrencyLayerClient } from "../currencyLayerClient";
 import { Test, TestingModule } from "@nestjs/testing";
 import { CurrencyLayerModule } from "../currencyLayerModule";
-import { AppModule } from "../../app/app.module";
+import { AppModule } from "../../app.module";
 
 describe("CurrencyLayerClient", () => {
   let currencyLayerClient: CurrencyLayerClient;

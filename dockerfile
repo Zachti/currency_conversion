@@ -1,15 +1,25 @@
-FROM node:18-alpine
+FROM node:18.16.1-alpine as builder
 
-WORKDIR /app
+WORKDIR /home/node
 
-COPY package*.json ./
+COPY package*.json /home/node/
 
 RUN npm install
 
-COPY . .
+COPY . /home/node/
 
 RUN npm run build
 
-EXPOSE 3000
+FROM node:18.16.1-alpine as currencyConvertor
 
-CMD [ "npm", "run", "start:prod" ]
+WORKDIR /home/app
+
+COPY --from=builder /home/node/dist/apps/currencyConvertor/package*.json /home/app/
+
+COPY --from=builder /home/node/dist/ /home/app/dist/
+
+RUN npm ci --ignore-scripts
+
+RUN apk --no-cache add curl
+
+CMD ["sh", "-c", "npm run start:dev"]
